@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PRAVAHA – Magazine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Times New Roman", Times, serif;
+}
+
+body{
+  background:#020617;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* BACKGROUND CANVAS */
+#aiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
+.logo img { height: 60px; }
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.nav-right a { color: white; text-decoration: none; font-size: 18px; }
+.nav-right img { height: 25px; }
+
+/* TITLE */
+.title {
+  text-align: center;
+  margin-top: 10px;
+}
+.title h1 { font-size: 60px; letter-spacing: 4px; }
+.caption { font-style: italic; }
+.title hr {
+  margin: 15px auto;
+  width: 350px;
+  border: 1px solid #00f6ff;
+}
+
+/* MENU */
+.category-bar {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  padding: 12px;
+}
+.category-bar a { text-decoration: none; color: white; font-size: 18px; }
+.category-bar a:hover { color: #00f6ff; }
+
+/* MAGAZINE CONTAINER - FULL SCREEN STYLE */
+.magazine-container {
+  width: 90%;
+  max-width: 1200px;
+  height: 90vh;
+  margin: 50px auto;
+  perspective: 2500px;
+  position: relative;
+}
+.magazine-page {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transform-style: preserve-3d;
+  transition: transform 1s ease;
+}
+
+/* BUTTONS */
+.flip-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 36px;
+  padding: 12px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+}
+.flip-btn:hover {
+  background: #00f6ff;
+  color: black;
+}
+.flip-left { left: -60px; }
+.flip-right { right: -60px; }
+
+</style>
+</head>
+<body>
+
+<canvas id="aiCanvas"></canvas>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <a href="index.html"><img src="images/logo.png"></a>
+  </div>
+  <div class="nav-right">
+    <a href="about.html">About Us</a>
+    <a href="https://www.facebook.com/profile.php?id=61584885309256" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></a>
+    <a href="https://www.instagram.com/pravaha2k26/?hl=en" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"></a>
+  </div>
+</div>
+
+<!-- TITLE -->
+<div class="title">
+  <h1>PRAVAHA</h1>
+  <div class="caption">~The Future of Technology</div>
+  <hr>
+</div>
+
+<!-- MENU -->
+<div class="category-bar">
+  <a href="index.html">HOME</a>
+  <a href="contents.html">CONTENTS</a>
+  <a href="magazine.html">MAGAZINE</a>
+  <a href="feedback.html">FEEDBACK</a>
+</div>
+
+<!-- MAGAZINE CONTAINER -->
+<div class="magazine-container">
+  <button class="flip-btn flip-left" onclick="prevPage()">❮</button>
+  <div class="magazine-page" id="magazinePage"></div>
+  <button class="flip-btn flip-right" onclick="nextPage()">❯</button>
+</div>
+
+<script>
+/* MAGAZINE PAGES - 16 PNG IMAGES */
+const pages = [
+  'images/1.png',
+  'images/2.png',
+  'images/3.png',
+  'images/4.png',
+  'images/5.png',
+  'images/6.png',
+  'images/7.png',
+  'images/8.png',
+  'images/9.png',
+  'images/10.png',
+  'images/11.png',
+  'images/12.png',
+  'images/13.png',
+  'images/14.png',
+  'images/15.png',
+  'images/16.png'
+];
+
+let currentPage = 0; // default first page
+
+/* GET topic param to open specific page from index/contents */
+const urlParams = new URLSearchParams(window.location.search);
+const topic = urlParams.get("topic");
+if(topic) {
+  if(topic === "professionals") currentPage = 3;  // 4th page
+  else if(topic === "careers") currentPage = 5;   // 6th page
+  else if(topic === "events") currentPage = 7;    // 8th page
+  else if(topic === "projects") currentPage = 9;  // 10th page
+  else if(topic === "tools") currentPage = 11;    // 12th page
+}
+
+const magazine = document.getElementById("magazinePage");
+
+function showPage() {
+  magazine.style.transform = "rotateY(180deg)";
+  setTimeout(() => {
+    magazine.style.backgroundImage = `url('${pages[currentPage]}')`;
+    magazine.style.transform = "rotateY(0deg)";
+  }, 400);
+}
+
+function nextPage() {
+  currentPage = (currentPage + 1) % pages.length;
+  showPage();
+}
+
+function prevPage() {
+  currentPage = (currentPage - 1 + pages.length) % pages.length;
+  showPage();
+}
+
+// Initialize
+showPage();
+
+/* THREE JS BACKGROUND */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("aiCanvas"), alpha:true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+camera.position.z = 5;
+
+/* PARTICLES */
+const particlesGeometry = new THREE.BufferGeometry();
+const particlesCount = 2000;
+const posArray = new Float32Array(particlesCount * 3);
+for (let i = 0; i < particlesCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 20;
+particlesGeometry.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
+const particlesMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0x00f6ff });
+const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particlesMesh);
+
+/* SATELLITES */
+const satellites = [];
+for (let i = 0; i < 5; i++) {
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.2,0.2), new THREE.MeshBasicMaterial({color:0xffffff}));
+  const panel1 = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.05,0.2), new THREE.MeshBasicMaterial({color:0x00f6ff}));
+  const panel2 = panel1.clone();
+  panel1.position.x = -0.5; panel2.position.x = 0.5;
+  const sat = new THREE.Group();
+  sat.add(body); sat.add(panel1); sat.add(panel2);
+  sat.position.x = Math.random()*10-5;
+  sat.position.y = Math.random()*6-3;
+  sat.position.z = Math.random()*-5;
+  scene.add(sat);
+  satellites.push(sat);
+}
+
+/* ANIMATION */
+function animate() {
+  requestAnimationFrame(animate);
+  particlesMesh.rotation.y += 0.0005;
+  satellites.forEach((sat,i)=>{
+    sat.position.x += 0.002*(i+1);
+    if(sat.position.x > 6) sat.position.x = -6;
+    sat.rotation.y += 0.01;
+  });
+  renderer.render(scene,camera);
+}
+animate();
+
+</script>
+</body>
+</html>
