@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <title>PRAVAHA – Feedback</title>
@@ -81,7 +81,7 @@ color:#00f6ff;
 /* FEEDBACK FORM */
 
 .feedback{
-width:40%;
+width:60%;
 margin:80px auto;
 background:rgba(255,255,255,0.05);
 padding:40px;
@@ -94,39 +94,13 @@ text-align:center;
 margin-bottom:30px;
 }
 
-.feedback input,
-.feedback textarea{
+/* Google form styling */
 
+.feedback iframe{
 width:100%;
-padding:12px;
-margin:12px 0;
+height:720px;
 border:none;
-border-radius:5px;
-font-size:16px;
-
-}
-
-.feedback button{
-
-width:100%;
-padding:12px;
-background:#00f6ff;
-border:none;
-font-size:18px;
-cursor:pointer;
-border-radius:5px;
-
-}
-
-.feedback button:hover{
-background:#0ff;
-}
-
-#message{
-text-align:center;
-margin-top:20px;
-font-size:18px;
-color:#00f6ff;
+border-radius:8px;
 }
 
 </style>
@@ -151,38 +125,32 @@ color:#00f6ff;
 
 <div class="menu">
 
-<a href="index.html">HOME</a> <a href="contents.html">CONTENTS</a> <a href="magazine.html?topic=professionals">MAGAZINE</a> <a href="feedback.html">FEEDBACK</a>
+<a href="index.html">HOME</a>
+<a href="contents.html">CONTENTS</a>
+<a href="magazine.html?topic=professionals">MAGAZINE</a>
+<a href="feedback.html">FEEDBACK</a>
 
 </div>
 
-
-<!-- FEEDBACK FORM -->
+<!-- FEEDBACK SECTION -->
 
 <div class="feedback">
 
-<h2>Feedback</h2>
+<h2>Reader Feedback</h2>
 
-<input type="text" placeholder="Your Name">
-
-<input type="email" placeholder="Your Email">
-
-<textarea rows="5" placeholder="Your Feedback"></textarea>
-
-<button onclick="submitFeedback()">Submit Feedback</button>
-
-<p id="message"></p>
+<iframe 
+src="https://docs.google.com/forms/d/e/1FAIpQLSfQMrZzyQaMqvFJPnlWWxxLaxbRZb3RSm3Y6Mtpd7AiEh4lMg/viewform?embedded=true"
+width="640"
+height="719"
+frameborder="0"
+marginheight="0"
+marginwidth="0">
+Loading…
+</iframe>
 
 </div>
 
 <script>
-
-/* FEEDBACK MESSAGE */
-
-function submitFeedback(){
-
-document.getElementById("message").innerHTML="✅ Feedback Submitted Successfully!";
-
-}
 
 /* 3D AI BACKGROUND */
 
