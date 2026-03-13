@@ -169,9 +169,13 @@ const pages = [
   '13.png',
   '14.png',
   '15.png',
-  '16.png'
+  '16.png',
+  '17.png',
+  '18.png',
+  '19.png',
+  '20.png',
+  '21.png'
 ];
-
 let currentPage = 0; // default first page
 
 /* GET topic param to open specific page from index/contents */
@@ -183,6 +187,7 @@ if(topic) {
   else if(topic === "events") currentPage = 7;    // 8th page
   else if(topic === "projects") currentPage = 9;  // 10th page
   else if(topic === "tools") currentPage = 11;    // 12th page
+  else if(topic === "impact") currentPage = 14;
 }
 
 const magazine = document.getElementById("magazinePage");
@@ -263,3 +268,4 @@ animate();
 </body>
 
 </html>
+
